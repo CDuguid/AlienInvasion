@@ -15,7 +15,7 @@ class Ship():
         
         # Start each new ship at the bottom centre of the screen.
         # For windowed mode, position manually or image is drawn below bottom of screen.
-        # self.rect.midbottom = (625,720)
+        # self.rect.midbottom = (625, 720)
         self.rect.midbottom = self.screen_rect.midbottom
         
         # Store a float for the ship's exact horizontal position.
@@ -39,3 +39,9 @@ class Ship():
     def blitme(self):
         """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
+        
+    def centre_ship(self):
+        """Centre the ship on the screen."""
+        # In windowed mode, next line needs set to (625, 720) as above.
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
