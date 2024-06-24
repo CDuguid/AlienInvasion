@@ -2,14 +2,15 @@ import sys
 from time import sleep
 from random import randint
 import pygame
+import pygamepopup
 from settings import Settings
 from ship import Ship
 from bullet import Bullet, YellowBullet, RedBullet
 from alien import Alien, YellowAlien, RedAlien
 from game_stats import GameStats
-from button import Button
 from scoreboard import Scoreboard
 from game_sounds import GameSounds
+from main_menu import MainMenuScene
 
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
@@ -43,17 +44,9 @@ class AlienInvasion:
         # Start Alien Invasion in an inactive state
         self.game_active = False
         
-        # Make the Play button
-        green = (0, 135, 0)
-        self.play_button = Button(self, "Play", green, 0, 100)
-        
-        # Make the Help button
-        blue = (0, 0, 135)
-        self.help_button = Button(self, "Help", blue, 0, 0)
-        
-        # Make the Difficulty button
-        red = (135, 0, 0)
-        self.difficulty_button = Button(self, "Difficulty", red, 0, -100)
+        # Initialise main menu
+        pygamepopup.init()
+        self.main_menu_scene = MainMenuScene(self)
         
         # Play welcome screen soundtrack
         self.sounds = GameSounds(self)
@@ -81,9 +74,12 @@ class AlienInvasion:
                     self._check_keydown_events(event)
                 elif event.type == pygame.KEYUP:
                     self._check_keyup_events(event)
+                elif event.type == pygame.MOUSEMOTION:
+                    # Highlight buttons upon hover
+                    self.main_menu_scene.motion(event.pos)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = pygame.mouse.get_pos()
-                    self._check_play_button(mouse_pos)
+                    if self.game_active == False:
+                        self.main_menu_scene.click(event.button, event.pos)
     
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -98,7 +94,7 @@ class AlienInvasion:
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
         elif event.key == pygame.K_p:
-            self._start_game()
+            self.start_game()
     
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -106,14 +102,8 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-    
-    def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clicks Play."""
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
-            self._start_game()
-    
-    def _start_game(self):
+       
+    def start_game(self):
         """Start a new game from welcome screen."""
         # Reset the game settings
         self.settings.initialise_dynamic_settings()
@@ -262,7 +252,11 @@ class AlienInvasion:
             self.alien_bullets.empty()
             
             # Create a new fleet and centre the ship
-            self._create_fleet()
+            # Create hard fleet if far enough into game; otherwise create normal fleet
+            if self.stats.level >= self.settings.hard_level:
+                self._create_hard_fleet()
+            else:
+                self._create_fleet()
             self.ship.centre_ship()
             
             # Pause
@@ -386,12 +380,10 @@ class AlienInvasion:
         
         # Draw the score info
         self.sb.show_score()
-        
-        # Draw the Play button if game is inactive
+                
+        # Show the main menu if game is inactive
         if not self.game_active:
-            self.play_button.draw_button()
-            self.help_button.draw_button()
-            self.difficulty_button.draw_button()
+            self.main_menu_scene.display()
         
         pygame.display.flip()
 
