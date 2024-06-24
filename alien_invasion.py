@@ -182,7 +182,7 @@ class AlienInvasion:
     def _check_bullet_ship_collisions(self):
         """Respond to bullet-ship collisions."""
         collisions = pygame.sprite.groupcollide(
-            self.alien_bullets, self.ship_sprite, True, True)
+            self.alien_bullets, self.ship_sprite, True, False)
         if collisions:
             self._ship_hit()
     
@@ -371,6 +371,8 @@ class AlienInvasion:
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
         self.screen.fill(self.settings.bg_colour)
+        self.sb.show_score()
+        
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         for alien_bullet in self.alien_bullets.sprites():
@@ -378,9 +380,6 @@ class AlienInvasion:
         self.ship.blitme()
         self.aliens.draw(self.screen)
         
-        # Draw the score info
-        self.sb.show_score()
-                
         # Show the main menu if game is inactive
         if not self.game_active:
             self.main_menu_scene.display()

@@ -6,23 +6,32 @@ from pygamepopup.menu_manager import MenuManager
 
 
 class MainMenuScene:
+    """A class to generate the main menu buttons for the game."""
     def __init__(self, ai_game):
+        """Create the menu."""
         self.screen = ai_game.screen
         self.ai_game = ai_game
         self.menu_manager = MenuManager(self.screen)
-        self.exit_request = False
 
         self.create_main_menu_interface()
 
     def create_main_menu_interface(self):
+        """Defines the menu buttons and what happens when clicked."""
         main_menu = InfoBox(
             "Main Menu",
             [
-                [Button(title="Play", callback=lambda: self.play_game())],
-                [Button(title="Help", callback=lambda: self.create_help_menu())],
-                [Button(title="Exit", callback=lambda: self.exit())],
+                [Button(title="Play", callback=lambda: self.play_game(), 
+                        background_path="images/blue_box.png",
+                        background_hover_path="images/blue_box_hover.png")],
+                [Button(title="Help", callback=lambda: self.create_help_menu(), 
+                        background_path="images/green_box.png",
+                        background_hover_path="images/green_box_hover.png")],
+                [Button(title="Exit", callback=lambda: self.exit(), 
+                        background_path="images/red_box.png",
+                        background_hover_path="images/red_box_hover.png")],
             ],
             has_close_button=False,
+            background_path="images/grey_box.png"
         )
         self.menu_manager.open_menu(main_menu)
 
