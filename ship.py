@@ -12,7 +12,7 @@ class Ship(Sprite):
         self.settings = ai_game.settings
         
         # Load the ship image and get its rect.
-        self.image = pygame.image.load('images/ship.png')
+        self.image = pygame.image.load('images/ship.png').convert_alpha()
         self.rect = self.image.get_rect()
         
         # Start each new ship at the bottom centre of the screen.

@@ -10,7 +10,7 @@ class Bullet(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
                 
-        self.image = pygame.image.load('images/player_bullet.bmp')
+        self.image = pygame.image.load('images/player_bullet.bmp').convert()
         self.rect = self.image.get_rect()
         self.rect.midtop = ai_game.ship.rect.midtop
         
@@ -58,7 +58,7 @@ class YellowBullet(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         
-        self.image = pygame.image.load('images/yellow_alien_bullet.bmp')
+        self.image = pygame.image.load('images/yellow_alien_bullet.bmp').convert()
         self.rect = self.image.get_rect()
         self.rect.midtop = yellow_alien.rect.midtop
         
@@ -85,7 +85,7 @@ class RedBullet(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         
-        self.image = pygame.image.load('images/red_alien_bullet.bmp')
+        self.image = pygame.image.load('images/red_alien_bullet.bmp').convert()
         self.rect = self.image.get_rect()
         self.rect.midtop = red_alien.rect.midtop
         
