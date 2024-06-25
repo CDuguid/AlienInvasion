@@ -12,6 +12,8 @@ class MainMenuScene:
         self.screen = ai_game.screen
         self.ai_game = ai_game
         self.menu_manager = MenuManager(self.screen)
+        # Track whether the starting level has been increased
+        self.level_modified = False
 
         self.create_main_menu_interface()
 
@@ -26,9 +28,10 @@ class MainMenuScene:
                 [Button(title="Help", callback=lambda: self.create_help_menu(), 
                         background_path="images/green_box.png",
                         background_hover_path="images/green_box_hover.png")],
-                [Button(title="Exit", callback=lambda: self.exit(), 
+                [Button(title="Increase Level", callback=lambda: self.increase_level(),
                         background_path="images/red_box.png",
                         background_hover_path="images/red_box_hover.png")],
+                [Button(title="Exit", callback=lambda: self.exit())],
             ],
             has_close_button=False,
             background_path="images/grey_box.png"
@@ -54,12 +57,16 @@ class MainMenuScene:
                              "screen. In the top right, you'll see your performance review. "
                              "Remember that departmental figures are down this year, so "
                              "we'd appreciate a good score while you save the planet.")],
-                [TextElement(text="Press p to begin play, h for this help and q to "
-                             "dishonourably surrender. Good luck, pilot.")]
+                [TextElement(text="Press P to begin play, H for this help, L to increase the "
+                             "starting level and Q to dishonourably surrender. Good luck, pilot.")]
             ],
             width=800,
         )
         self.menu_manager.open_menu(help_menu)
+    
+    def increase_level(self):
+        self.ai_game.start_new_level()
+        self.level_modified = True
 
     def exit(self):
         sys.exit()

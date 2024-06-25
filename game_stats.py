@@ -7,6 +7,7 @@ class GameStats:
         """Initialise statistics."""
         self.settings = ai_game.settings
         self.reset_stats()
+        self.reset_level()
         
         # Access the saved high score
         self.score_path = Path('high_score.txt')
@@ -16,4 +17,7 @@ class GameStats:
         """Initialise statistics that can change during the game."""
         self.ships_left = self.settings.ship_limit
         self.score = 0
+    
+    def reset_level(self):
+        """Initialise the starting level separately from other statistics."""
         self.level = 1

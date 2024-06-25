@@ -95,6 +95,10 @@ class AlienInvasion:
             self._fire_bullet()
         elif event.key == pygame.K_p:
             self.start_game()
+        elif event.key == pygame.K_l:
+            self.main_menu_scene.increase_level()
+        elif event.key == pygame.K_h:
+            self.main_menu_scene.create_help_menu()
     
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -106,7 +110,10 @@ class AlienInvasion:
     def start_game(self):
         """Start a new game from welcome screen."""
         # Reset the game settings
-        self.settings.initialise_dynamic_settings()
+        # Conditional block to prevent reset if difficulty increased via menu
+        if not self.main_menu_scene.level_modified:
+            self.settings.initialise_dynamic_settings()
+            self.stats.reset_level()
         self.stats.reset_stats()
         self.sb.prep_score()
         self.sb.prep_level()
@@ -114,14 +121,13 @@ class AlienInvasion:
         self.game_active = True
         
         # Get rid of any remaining aliens and bullets
-        self.bullets.empty()
-        self.aliens.empty()
-        self.yellow_aliens.empty()
-        self.red_aliens.empty()
-        self.alien_bullets.empty()
+        self._empty_sprites()
         
         # Create a new fleet and centre the ship
-        self._create_fleet()
+        if self.stats.level >= self.settings.hard_level:
+            self._create_hard_fleet()
+        else:
+            self._create_fleet()
         self.ship.centre_ship()
         
         # Play level soundtrack
@@ -189,10 +195,7 @@ class AlienInvasion:
     def start_new_level(self):
         """Start a new wave of aliens."""
         # Destroy existing bullets and increase speed.
-        self.bullets.empty()
-        self.alien_bullets.empty()
-        self.yellow_aliens.empty()
-        self.red_aliens.empty()
+        self._empty_sprites()
         self.settings.increase_speed()
         
         # Increase level
@@ -245,11 +248,7 @@ class AlienInvasion:
             self.sb.prep_ships()
             
             # Get rid of remaining bullets and aliens
-            self.bullets.empty()
-            self.aliens.empty()
-            self.yellow_aliens.empty()
-            self.red_aliens.empty()
-            self.alien_bullets.empty()
+            self._empty_sprites()
             
             # Create a new fleet and centre the ship
             # Create hard fleet if far enough into game; otherwise create normal fleet
@@ -262,8 +261,23 @@ class AlienInvasion:
             # Pause
             sleep(0.5)
         else:
-            self.game_active = False
-            pygame.mouse.set_visible(True)
+            self._end_game()
+    
+    def _end_game(self):
+        """Resets level and dynamic settings on game end."""
+        self.main_menu_scene.level_modified = False
+        self.stats.reset_level()
+        self.settings.initialise_dynamic_settings()
+        self.game_active = False
+        pygame.mouse.set_visible(True)
+    
+    def _empty_sprites(self):
+        """Empties all sprite groups except for the ship."""
+        self.bullets.empty()
+        self.aliens.empty()
+        self.yellow_aliens.empty()
+        self.red_aliens.empty()
+        self.alien_bullets.empty()
     
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
