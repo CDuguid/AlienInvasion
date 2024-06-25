@@ -9,11 +9,9 @@ class Bullet(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.colour = self.settings.bullet_colour
-        
-        # Create a bullet rect at (0, 0) and then set correct position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
-                                self.settings.bullet_height)
+                
+        self.image = pygame.image.load('images/player_bullet.bmp')
+        self.rect = self.image.get_rect()
         self.rect.midtop = ai_game.ship.rect.midtop
         
         # Store the bullet's position as a float.
@@ -26,9 +24,9 @@ class Bullet(Sprite):
         # Update the rect position
         self.rect.y = self.y
     
-    def draw_bullet(self):
+    def blitme(self):
         """Draw the bullet to the screen."""
-        pygame.draw.rect(self.screen, self.colour, self.rect)
+        self.screen.blit(self.image, self.rect)
 
 """
 class YellowBullet(Bullet):
@@ -59,12 +57,10 @@ class YellowBullet(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.colour = self.settings.yellow_bullet_colour
         
-        # Create a bullet rect at (0, 0) and then set correct position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
-                                self.settings.bullet_height)
-        self.rect.midbottom = yellow_alien.rect.midbottom
+        self.image = pygame.image.load('images/yellow_alien_bullet.bmp')
+        self.rect = self.image.get_rect()
+        self.rect.midtop = yellow_alien.rect.midtop
         
         # Store the bullet's position as a float.
         self.y = float(self.rect.y)
@@ -76,9 +72,9 @@ class YellowBullet(Sprite):
         # Update the rect position
         self.rect.y = self.y
     
-    def draw_bullet(self):
+    def blitme(self):
         """Draw the bullet to the screen."""
-        pygame.draw.rect(self.screen, self.colour, self.rect)
+        self.screen.blit(self.image, self.rect)
 
 class RedBullet(Sprite):
     """A class to manage bullets fired from red aliens."""
@@ -88,12 +84,10 @@ class RedBullet(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.colour = self.settings.red_bullet_colour
         
-        # Create a bullet rect at (0, 0) and then set correct position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
-                                self.settings.bullet_height)
-        self.rect.midbottom = red_alien.rect.midbottom
+        self.image = pygame.image.load('images/red_alien_bullet.bmp')
+        self.rect = self.image.get_rect()
+        self.rect.midtop = red_alien.rect.midtop
         
         # Store the bullet's position as a float.
         self.y = float(self.rect.y)
@@ -105,6 +99,6 @@ class RedBullet(Sprite):
         # Update the rect position
         self.rect.y = self.y
     
-    def draw_bullet(self):
+    def blitme(self):
         """Draw the bullet to the screen."""
-        pygame.draw.rect(self.screen, self.colour, self.rect)
+        self.screen.blit(self.image, self.rect)

@@ -388,9 +388,9 @@ class AlienInvasion:
         self.sb.show_score()
         
         for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
+            bullet.blitme()
         for alien_bullet in self.alien_bullets.sprites():
-            alien_bullet.draw_bullet()
+            alien_bullet.blitme()
         self.ship.blitme()
         self.aliens.draw(self.screen)
         
