@@ -40,7 +40,7 @@ class AlienInvasion:
         self.yellow_aliens = pygame.sprite.Group()
         self.red_aliens = pygame.sprite.Group()
         
-        self._create_fleet()
+        self.create_fleet()
         
         # Start Alien Invasion in an inactive state
         self.game_active = False
@@ -100,6 +100,8 @@ class AlienInvasion:
             self.main_menu_scene.increase_level()
         elif event.key == pygame.K_h:
             self.main_menu_scene.create_help_menu()
+        elif event.key == pygame.K_r:
+            self.main_menu_scene.reset_starting_difficulty()
     
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -122,13 +124,10 @@ class AlienInvasion:
         self.game_active = True
         
         # Get rid of any remaining aliens and bullets
-        self._empty_sprites()
+        self.empty_sprites()
         
         # Create a new fleet and centre the ship
-        if self.stats.level >= self.settings.hard_level:
-            self._create_hard_fleet()
-        else:
-            self._create_fleet()
+        self.create_fleet()
         self.ship.centre_ship()
         
         # Play level soundtrack
@@ -196,18 +195,14 @@ class AlienInvasion:
     def start_new_level(self):
         """Start a new wave of aliens."""
         # Destroy existing bullets and increase speed.
-        self._empty_sprites()
+        self.empty_sprites()
         self.settings.increase_speed()
         
         # Increase level
         self.stats.level += 1
         self.sb.prep_level()
         
-        # Create hard fleet if far enough into game; otherwise create normal fleet
-        if self.stats.level >= self.settings.hard_level:
-            self._create_hard_fleet()
-        else:
-            self._create_fleet()
+        self.create_fleet()
         
         # Play new level soundtrack
         self.sounds.play_level_theme()
@@ -249,14 +244,10 @@ class AlienInvasion:
             self.sb.prep_ships()
             
             # Get rid of remaining bullets and aliens
-            self._empty_sprites()
+            self.empty_sprites()
             
             # Create a new fleet and centre the ship
-            # Create hard fleet if far enough into game; otherwise create normal fleet
-            if self.stats.level >= self.settings.hard_level:
-                self._create_hard_fleet()
-            else:
-                self._create_fleet()
+            self.create_fleet()
             self.ship.centre_ship()
             
             # Pause
@@ -272,7 +263,7 @@ class AlienInvasion:
         self.game_active = False
         pygame.mouse.set_visible(True)
     
-    def _empty_sprites(self):
+    def empty_sprites(self):
         """Empties all sprite groups except for the ship."""
         self.bullets.empty()
         self.aliens.empty()
@@ -287,62 +278,41 @@ class AlienInvasion:
                 # Treat this the same as if the ship gets hit
                 self._ship_hit()
                 break
-    
-    def _create_fleet(self):
-        """Create a fleet of aliens."""
-        # Create an initial row of yellow aliens
-        alien = YellowAlien(self)
-        alien_width, alien_height = alien.rect.size
 
-        current_x, current_y = alien_width, alien_height
-        while current_x < (self.settings.screen_width - 2 * alien_width):
-                self._create_yellow_alien(current_x, current_y)
-                current_x += 2 * alien_width
-        
-        # Create an alien and keep adding aliens until there's no room left
-        # Spacing between aliens is one alien width and one alien height
-        # Basic fleet moved down a row from initial arrangement
+    def create_fleet(self):
+        """Creates the alien fleet."""
+        # All aliens are the same size
         alien = Alien(self)
-
-        current_x, current_y = alien_width, 3 * alien_height
-        while current_y < (self.settings.screen_height - 3 * alien_height):
-            while current_x < (self.settings.screen_width - 2 * alien_width):
-                self._create_alien(current_x, current_y)
-                current_x += 2 * alien_width
+        alien_width, alien_height = alien.rect.size
+        
+        # Variables to determine how many rows to fill
+        current_x, current_y = alien_width, alien_height
+        total_space_y = self.settings.screen_height -  3 * alien_height
+        total_rows = total_space_y // (2 * alien_height)
+        req_red_rows = min((self.stats.level - 1) // 4, total_rows)
+        used_rows = 0
+        yellow_row_created = False
+        
+        # Create a red row every 4 levels, then 1 yellow, then green for remaining rows
+        while total_rows - used_rows > 0:
+            if req_red_rows - used_rows > 0:
+                while current_x < (self.settings.screen_width - 2 * alien_width):
+                    self._create_red_alien(current_x, current_y)
+                    current_x += 2 * alien_width
+            elif total_rows >= 1 and not yellow_row_created:
+                while current_x < (self.settings.screen_width - 2 * alien_width):
+                    self._create_yellow_alien(current_x, current_y)
+                    current_x += 2 * alien_width
+                yellow_row_created = True
+            else:
+                while current_x < (self.settings.screen_width - 2 * alien_width):
+                    self._create_alien(current_x, current_y)
+                    current_x += 2 * alien_width
             
-            # Finished a row; reset x value and increment y value
+            # Reset variables for new loop after a row is filled
+            used_rows += 1
             current_x = alien_width
             current_y += 2 * alien_height
-    
-    def _create_hard_fleet(self):
-        """Create a harder version of the fleet."""
-        # Create an initial row of red aliens
-        alien = RedAlien(self)
-        alien_width, alien_height = alien.rect.size
-
-        current_x, current_y = alien_width, alien_height
-        while current_x < (self.settings.screen_width - 2 * alien_width):
-            self._create_red_alien(current_x, current_y)
-            current_x += 2 * alien_width
-                
-        # Create a second row with yellow aliens
-        alien = YellowAlien(self)
-        current_x, current_y = alien_width, 3 * alien_height
-        while current_x < (self.settings.screen_width - 2 * alien_width):
-            self._create_yellow_alien(current_x, current_y)
-            current_x += 2 * alien_width
-        
-        # Fill the remaining rows with green aliens
-        alien = Alien(self)
-        current_x, current_y = alien_width, 5 * alien_height
-        while current_y < (self.settings.screen_height - 3 * alien_height):
-            while current_x < (self.settings.screen_width - 2 * alien_width):
-                self._create_alien(current_x, current_y)
-                current_x += 2 * alien_width
-                
-            current_x = alien_width
-            current_y += 2 * alien_height
-        
     
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""

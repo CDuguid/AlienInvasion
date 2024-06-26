@@ -31,6 +31,9 @@ class MainMenuScene:
                 [Button(title="Increase Level", callback=lambda: self.increase_level(),
                         background_path="images/red_box.png",
                         background_hover_path="images/red_box_hover.png")],
+                [Button(title="Reset Level", callback=lambda: self.reset_starting_difficulty(),
+                        background_path="images/purple_box.png",
+                        background_hover_path="images/purple_box_hover.png")],
                 [Button(title="Exit", callback=lambda: self.exit())],
             ],
             has_close_button=False,
@@ -58,7 +61,8 @@ class MainMenuScene:
                              "Remember that departmental figures are down this year, so "
                              "we'd appreciate a good score while you save the planet.")],
                 [TextElement(text="Press P to begin play, H for this help, L to increase the "
-                             "starting level and Q to dishonourably surrender. Good luck, pilot.")]
+                             "starting level, R to reset the starting level, "
+                             "and Q to dishonourably surrender. Good luck, pilot.")]
             ],
             width=800,
         )
@@ -67,6 +71,13 @@ class MainMenuScene:
     def increase_level(self):
         self.ai_game.start_new_level()
         self.level_modified = True
+    
+    def reset_starting_difficulty(self):
+        self.ai_game.settings.initialise_dynamic_settings()
+        self.ai_game.stats.reset_level()
+        self.ai_game.sb.prep_level()
+        self.ai_game.empty_sprites
+        self.ai_game.create_fleet()
 
     def exit(self):
         sys.exit()
