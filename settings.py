@@ -8,7 +8,7 @@ class Settings:
         self.screen_height = 800
         
         # Ship settings
-        self.ship_limit = 0
+        self.ship_limit = 3
         
         # Bullet settings        
         self.bullets_allowed = 3
