@@ -3,6 +3,7 @@ from time import sleep
 from random import randint
 import pygame
 import pygamepopup
+
 from settings import Settings
 from ship import Ship
 from bullet import Bullet, YellowBullet, RedBullet
@@ -22,8 +23,8 @@ class AlienInvasion:
         self.settings = Settings()
         
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.settings.screen_width = self.screen.get_rect().width
-        self.settings.screen_height = self.screen.get_rect().height
+        self.screen_width = self.screen.get_rect().width
+        self.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
         self.bg_image = pygame.image.load('images/background_space.png').convert()
         
@@ -94,13 +95,14 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif event.key == pygame.K_p:
+        elif event.key == pygame.K_p and self.game_active == False:
             self.start_game()
+        # Letting this one stay active while game is running for convenience
         elif event.key == pygame.K_l:
             self.main_menu_scene.increase_level()
-        elif event.key == pygame.K_h:
+        elif event.key == pygame.K_h and self.game_active == False:
             self.main_menu_scene.create_help_menu()
-        elif event.key == pygame.K_r:
+        elif event.key == pygame.K_r and self.game_active == False:
             self.main_menu_scene.reset_starting_difficulty()
     
     def _check_keyup_events(self, event):
@@ -113,7 +115,7 @@ class AlienInvasion:
     def start_game(self):
         """Start a new game from welcome screen."""
         # Reset the game settings
-        # Conditional block to prevent reset if difficulty increased via menu
+        # Conditional block to prevent reset on Play if difficulty increased via menu button
         if not self.main_menu_scene.level_modified:
             self.settings.initialise_dynamic_settings()
             self.stats.reset_level()
@@ -163,6 +165,9 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        for bullet in self.alien_bullets.copy():
+            if bullet.rect.top >= self.screen_height:
+                self.alien_bullets.remove(bullet)
         
         self._check_bullet_alien_collisions()
         self._check_bullet_ship_collisions()
@@ -257,7 +262,7 @@ class AlienInvasion:
     
     def _end_game(self):
         """Shows game over stats and then cleans them up."""
-        # Show the game over stats; sleep to prevent accidental game over screen skip
+        # Show the game over stats; sleep to prevent accidental skip of game over screen
         sleep(1)
         self._show_game_over()
         
@@ -281,7 +286,7 @@ class AlienInvasion:
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
         for alien in self.aliens.sprites():
-            if alien.rect.bottom >= self.settings.screen_height:
+            if alien.rect.bottom >= self.screen_height:
                 # Treat this the same as if the ship gets hit
                 self._ship_hit()
                 break
@@ -294,7 +299,7 @@ class AlienInvasion:
         
         # Variables to determine how many rows to fill
         current_x, current_y = alien_width, alien_height
-        total_space_y = self.settings.screen_height -  3 * alien_height
+        total_space_y = self.screen_height -  3 * alien_height
         total_rows = total_space_y // (2 * alien_height)
         req_red_rows = min((self.stats.level - 1) // 4, total_rows)
         used_rows = 0
@@ -303,16 +308,16 @@ class AlienInvasion:
         # Create a red row every 4 levels, then 1 yellow, then green for remaining rows
         while total_rows - used_rows > 0:
             if req_red_rows - used_rows > 0:
-                while current_x < (self.settings.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - 2 * alien_width):
                     self._create_red_alien(current_x, current_y)
                     current_x += 2 * alien_width
             elif total_rows >= 1 and not yellow_row_created:
-                while current_x < (self.settings.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - 2 * alien_width):
                     self._create_yellow_alien(current_x, current_y)
                     current_x += 2 * alien_width
                 yellow_row_created = True
             else:
-                while current_x < (self.settings.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - 2 * alien_width):
                     self._create_alien(current_x, current_y)
                     current_x += 2 * alien_width
             
@@ -382,11 +387,11 @@ class AlienInvasion:
         """Shows the intro screen when game is first loaded."""
         self.screen.fill((0, 0, 0))
         self._draw_text("ALIEN", 60, (200, 0, 150), 
-                       self.settings.screen_width / 2, self.settings.screen_height / 4)
+                       self.screen_width / 2, self.screen_height / 4)
         self._draw_text("INVASION", 60, (200, 0, 150), 
-                       self.settings.screen_width / 2, self.settings.screen_height / 2)
+                       self.screen_width / 2, self.screen_height / 2)
         self._draw_text("Press any key to begin", 40, (0, 255, 0), 
-                       self.settings.screen_width / 2, self.settings.screen_height * 3 / 4)
+                       self.screen_width / 2, self.screen_height * 3 / 4)
         
         pygame.display.flip()
         self._wait_for_key()
@@ -402,19 +407,19 @@ class AlienInvasion:
     def _show_game_over(self):
         """Shows game info when the player is defeated."""
         # Create partially transparent surface over the game area
-        surface = pygame.Surface((self.settings.screen_width, self.settings.screen_height), pygame.SRCALPHA)
+        surface = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
         surface.fill((80, 0, 0, 120))
         self.screen.blit(surface, (0, 0))
         
         self._draw_text("GAME OVER!", 84, (255, 0, 0), 
-                        self.settings.screen_width / 2, self.settings.screen_height / 4)
+                        self.screen_width / 2, self.screen_height / 4)
         self._draw_text(f"You successfully defeated {self.stats.level -1} waves of aliens "
                         f"with a score of {round(self.stats.score, -1)}", 40, (255, 0, 0), 
-                       self.settings.screen_width / 2, self.settings.screen_height / 2)
+                       self.screen_width / 2, self.screen_height / 2)
         self._draw_text(f"The score to beat is currently {round(self.stats.high_score, -1)}", 40, (255, 0, 0),
-                        self.settings.screen_width / 2, self.settings.screen_height / 2 - 40)
+                        self.screen_width / 2, self.screen_height / 2 - 40)
         self._draw_text("Press any key to continue", 40, (255, 0, 0),
-                        self.settings.screen_width / 2, self.settings.screen_height * 3 / 4)
+                        self.screen_width / 2, self.screen_height * 3 / 4)
         
         pygame.display.flip()
         self._wait_for_key()

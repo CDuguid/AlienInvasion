@@ -42,9 +42,11 @@ class MainMenuScene:
         self.menu_manager.open_menu(main_menu)
 
     def play_game(self):
+        """Starts the game when Play is pressed."""
         self.ai_game.start_game()
     
     def create_help_menu(self):
+        """Creates the help box popup."""
         help_menu = InfoBox(
             "Game Help",
             [
@@ -69,10 +71,12 @@ class MainMenuScene:
         self.menu_manager.open_menu(help_menu)
     
     def increase_level(self):
+        """Increases the game's difficulty level."""
         self.ai_game.start_new_level()
         self.level_modified = True
     
     def reset_starting_difficulty(self):
+        """Reverts the game's difficulty to level 1."""
         self.ai_game.settings.initialise_dynamic_settings()
         self.ai_game.stats.reset_level()
         self.ai_game.sb.prep_level()
@@ -80,6 +84,7 @@ class MainMenuScene:
         self.ai_game.create_fleet()
 
     def exit(self):
+        """Quits the game."""
         sys.exit()
 
     def display(self) -> None:
