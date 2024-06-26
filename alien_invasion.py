@@ -256,11 +256,18 @@ class AlienInvasion:
             self._end_game()
     
     def _end_game(self):
-        """Resets level and dynamic settings on game end."""
+        """Shows game over stats and then cleans them up."""
+        # Show the game over stats; sleep to prevent accidental game over screen skip
+        sleep(1)
+        self._show_game_over()
+        
+        # Reset the level and dynamic settings for a new game
         self.main_menu_scene.level_modified = False
         self.stats.reset_level()
         self.settings.initialise_dynamic_settings()
         self.game_active = False
+        
+        # Mouse isn't going invisible, but just in case it does in the future...
         pygame.mouse.set_visible(True)
     
     def empty_sprites(self):
@@ -370,8 +377,62 @@ class AlienInvasion:
             self.main_menu_scene.display()
         
         pygame.display.flip()
+    
+    def _show_intro(self):
+        """Shows the intro screen when game is first loaded."""
+        self.screen.fill((0, 0, 0))
+        self._draw_text("ALIEN", 60, (200, 0, 150), 
+                       self.settings.screen_width / 2, self.settings.screen_height / 4)
+        self._draw_text("INVASION", 60, (200, 0, 150), 
+                       self.settings.screen_width / 2, self.settings.screen_height / 2)
+        self._draw_text("Press any key to begin", 40, (0, 255, 0), 
+                       self.settings.screen_width / 2, self.settings.screen_height * 3 / 4)
+        
+        pygame.display.flip()
+        self._wait_for_key()
+    
+    def _draw_text(self, text, size, colour, x, y):
+        """Draws text for use on the intro/game-over screens."""
+        font = pygame.font.Font("freesansbold.ttf", size)
+        text_surface = font.render(text, True, colour)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
+    
+    def _show_game_over(self):
+        """Shows game info when the player is defeated."""
+        # Create partially transparent surface over the game area
+        surface = pygame.Surface((self.settings.screen_width, self.settings.screen_height), pygame.SRCALPHA)
+        surface.fill((80, 0, 0, 120))
+        self.screen.blit(surface, (0, 0))
+        
+        self._draw_text("GAME OVER!", 84, (255, 0, 0), 
+                        self.settings.screen_width / 2, self.settings.screen_height / 4)
+        self._draw_text(f"You successfully defeated {self.stats.level -1} waves of aliens "
+                        f"with a score of {round(self.stats.score, -1)}", 40, (255, 0, 0), 
+                       self.settings.screen_width / 2, self.settings.screen_height / 2)
+        self._draw_text(f"The score to beat is currently {round(self.stats.high_score, -1)}", 40, (255, 0, 0),
+                        self.settings.screen_width / 2, self.settings.screen_height / 2 - 40)
+        self._draw_text("Press any key to continue", 40, (255, 0, 0),
+                        self.settings.screen_width / 2, self.settings.screen_height * 3 / 4)
+        
+        pygame.display.flip()
+        self._wait_for_key()
+    
+    def _wait_for_key(self):
+        """Pauses the game during intro and end screens while waiting for the player to respond."""
+        self.clock.tick(60)
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting = False
+                    sys.exit()
+                elif event.type == pygame.KEYUP:
+                    waiting = False
 
 if __name__ == '__main__':
     # Make a game instance and run the game.
     ai = AlienInvasion()
+    ai._show_intro()
     ai.run_game()

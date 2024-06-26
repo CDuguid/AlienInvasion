@@ -8,7 +8,7 @@ class Settings:
         self.screen_height = 800
         
         # Ship settings
-        self.ship_limit = 3
+        self.ship_limit = 0
         
         # Bullet settings        
         self.bullets_allowed = 3
@@ -17,7 +17,6 @@ class Settings:
         self.fleet_drop_speed = 10
         self.yellow_bullet_chance = 3
         self.red_bullet_chance = 6
-        self.hard_level = 5
                 
         # How quickly the game speeds up
         self.speedup_scale = 1.1
