@@ -1,0 +1,27 @@
+Ship:
+Sci-fi hover tank by Kingshemboo
+https://opengameart.org/content/sci-fi-hover-tank
+
+Ship Bullets:
+Bullets Game Asset by bevouliin
+https://opengameart.org/content/bullets-game-asset
+
+Aliens:
+Space Invaders Cartoon Icon by Fupi
+https://opengameart.org/content/space-invaders-cartoon-icon
+
+Alien Bullets:
+Spaceship Bullet by vergil1018
+https://opengameart.org/content/spaceship-bullet
+
+Background Image:
+Space by Kutejnikov
+https://opengameart.org/content/space-9
+
+Music and Sounds:
+Various tracks by Eric Matyas
+https://soundimage.org
+
+Main Menu:
+Pygame Popup Manager by Grimmys
+https://github.com/Grimmys/pygame_popup_manager
