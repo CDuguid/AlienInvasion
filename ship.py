@@ -16,7 +16,7 @@ class Ship(Sprite):
         self.rect = self.image.get_rect()
         
         # Start each new ship at the bottom centre of the screen.
-        # For windowed mode, position manually or image is drawn below bottom of screen.
+        # For windowed mode, position manually or image is drawn below bottom of screen on laptop.
         # self.rect.midbottom = (625, 720)
         self.rect.midbottom = self.screen_rect.midbottom
         

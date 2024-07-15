@@ -4,7 +4,7 @@ class GameSounds:
     """Play music and sound effects for Alien Invasion."""
     
     def __init__(self, ai_game):
-        """Figure out what to initialise!"""
+        """Initialise mixer and pull game level."""
         pygame.mixer.init()
         self.stats = ai_game.stats
         
@@ -42,6 +42,7 @@ class GameSounds:
     def play_alien_hit_sound(self):
         """Plays the sound for an alien being hit."""
         sound = pygame.mixer.Sound('sounds/alien_hit.mp3')
+        sound.set_volume(0.6)
         self.channel_alien.play(sound)
     
     def play_ship_hit_sound(self):

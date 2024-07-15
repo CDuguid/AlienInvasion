@@ -12,6 +12,7 @@ from game_stats import GameStats
 from scoreboard import Scoreboard
 from game_sounds import GameSounds
 from main_menu import MainMenuScene
+from explosion import Explosion
 
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
@@ -22,11 +23,14 @@ class AlienInvasion:
         self.clock = pygame.time.Clock()
         self.settings = Settings()
         
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # Next two lines determine fullscreen vs windowed.
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1280, 800))
         self.screen_width = self.screen.get_rect().width
         self.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
-        self.bg_image = pygame.image.load('images/background_space.png').convert()
+        self.bg_image_orig = pygame.image.load('images/background_space.png').convert()
+        self.bg_image = pygame.transform.scale(self.bg_image_orig, (self.screen_width, self.screen_height))
         
         # Create an instance to store game statistics and create a scoreboard
         self.stats = GameStats(self)
@@ -40,6 +44,7 @@ class AlienInvasion:
         self.alien_bullets = pygame.sprite.Group()
         self.yellow_aliens = pygame.sprite.Group()
         self.red_aliens = pygame.sprite.Group()
+        self.explosions = pygame.sprite.Group()
         
         self.create_fleet()
         
@@ -63,6 +68,7 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+                self.explosions.update()
             
             self._update_screen()
             self.clock.tick(60)
@@ -182,6 +188,9 @@ class AlienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
+            for collision in collisions:
+                explosion = Explosion(collision.rect.center)
+                self.explosions.add(explosion)
             self.sb.prep_score()
             self.sb.check_high_score()
             self.sounds.play_alien_hit_sound()
@@ -367,6 +376,7 @@ class AlienInvasion:
     
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
+        self.screen.fill((0, 0, 0))
         self.screen.blit(self.bg_image, (0, 0))
         self.sb.show_score()
         
@@ -376,6 +386,7 @@ class AlienInvasion:
             alien_bullet.blitme()
         self.ship.blitme()
         self.aliens.draw(self.screen)
+        self.explosions.draw(self.screen)
         
         # Show the main menu if game is inactive
         if not self.game_active:

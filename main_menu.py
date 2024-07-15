@@ -80,7 +80,7 @@ class MainMenuScene:
         self.ai_game.settings.initialise_dynamic_settings()
         self.ai_game.stats.reset_level()
         self.ai_game.sb.prep_level()
-        self.ai_game.empty_sprites
+        self.ai_game.empty_sprites()
         self.ai_game.create_fleet()
 
     def exit(self):
