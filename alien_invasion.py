@@ -1,6 +1,7 @@
 import sys
 from time import sleep
 from random import randint
+from os import path
 import pygame
 import pygamepopup
 
@@ -13,6 +14,8 @@ from scoreboard import Scoreboard
 from game_sounds import GameSounds
 from main_menu import MainMenuScene
 from explosion import Explosion
+
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
@@ -29,7 +32,7 @@ class AlienInvasion:
         self.screen_width = self.screen.get_rect().width
         self.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
-        self.bg_image_orig = pygame.image.load('images/background_space.png').convert()
+        self.bg_image_orig = pygame.image.load(path.join(images_dir, 'background_space.png')).convert()
         self.bg_image = pygame.transform.scale(self.bg_image_orig, (self.screen_width, self.screen_height))
         
         # Create an instance to store game statistics and create a scoreboard

@@ -1,5 +1,8 @@
+from os import path
 import pygame
 from pygame.sprite import Sprite
+
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class Bullet(Sprite):
     """A class to manage bullets fired from the ship."""
@@ -10,7 +13,7 @@ class Bullet(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
                 
-        self.image = pygame.image.load('images/player_bullet.bmp').convert()
+        self.image = pygame.image.load(path.join(images_dir, 'player_bullet.bmp')).convert()
         self.rect = self.image.get_rect()
         self.rect.midtop = ai_game.ship.rect.midtop
         
@@ -36,7 +39,7 @@ class YellowBullet(Bullet):
         """Create a yellow bullet at the alien's current position."""
         super().__init__(ai_game)
         # Overwrite bullet image
-        self.image = pygame.image.load('images/yellow_alien_bullet.bmp').convert()
+        self.image = pygame.image.load(path.join(images_dir, 'yellow_alien_bullet.bmp')).convert()
         self.rect = self.image.get_rect()
         
         # Change starting position to the firing alien
@@ -60,7 +63,7 @@ class RedBullet(Bullet):
         """Create a red bullet at the alien's current position."""
         super().__init__(ai_game)
         # Overwrite bullet image
-        self.image = pygame.image.load('images/red_alien_bullet.bmp').convert()
+        self.image = pygame.image.load(path.join(images_dir, 'red_alien_bullet.bmp')).convert()
         self.rect = self.image.get_rect()
         
         # Change starting position to the firing alien

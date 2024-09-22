@@ -1,5 +1,8 @@
+from os import path
 import pygame
 from pygame.sprite import Sprite
+
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class Alien(Sprite):
     """A class to represent a single alien in the fleet."""
@@ -11,7 +14,7 @@ class Alien(Sprite):
         self.settings = ai_game.settings
         
         # Load the alien image and set its rect attribute.
-        self.image = pygame.image.load('images/green_alien.bmp').convert_alpha()
+        self.image = pygame.image.load(path.join(images_dir, 'green_alien.bmp')).convert_alpha()
         self.rect = self.image.get_rect()
         
         # Start each new alien near the top left of the screen.
@@ -39,7 +42,7 @@ class YellowAlien(Alien):
         super().__init__(ai_game)
         
         # Overwrite the default alien image
-        self.image = pygame.image.load('images/yellow_alien.bmp').convert_alpha()
+        self.image = pygame.image.load(path.join(images_dir, 'yellow_alien.bmp')).convert_alpha()
         
 class RedAlien(Alien):
     """A class to represent a red alien in the fleet which shoots back."""
@@ -49,4 +52,4 @@ class RedAlien(Alien):
         super().__init__(ai_game)
         
         # Overwrite the default alien image
-        self.image = pygame.image.load('images/red_alien.bmp').convert_alpha()      
+        self.image = pygame.image.load(path.join(images_dir, 'red_alien.bmp')).convert_alpha()      

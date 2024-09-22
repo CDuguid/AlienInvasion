@@ -1,5 +1,8 @@
+from os import path
 import pygame
 from pygame.sprite import Sprite
+
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class Explosion(Sprite):
     """A class to manage explosions when sprites are shot."""
@@ -9,8 +12,8 @@ class Explosion(Sprite):
         super().__init__()
         self.explosion_animation = []
         for i in range(6):
-            filename = f"images/explosion{i}.png"
-            img = pygame.image.load(filename).convert_alpha()
+            filename = f"explosion{i}.png"
+            img = pygame.image.load(path.join(images_dir, filename)).convert_alpha()
             self.explosion_animation.append(img)
         self.image = self.explosion_animation[0]
         self.rect = self.image.get_rect()

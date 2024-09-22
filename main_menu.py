@@ -1,9 +1,11 @@
 import sys
+from os import path
 import pygame
 import pygamepopup
 from pygamepopup.components import Button, InfoBox, TextElement
 from pygamepopup.menu_manager import MenuManager
 
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class MainMenuScene:
     """A class to generate the main menu buttons for the game."""
@@ -23,21 +25,21 @@ class MainMenuScene:
             "Main Menu",
             [
                 [Button(title="Play", callback=lambda: self.play_game(), 
-                        background_path="images/blue_box.png",
-                        background_hover_path="images/blue_box_hover.png")],
+                        background_path=path.join(images_dir, "blue_box.png"),
+                        background_hover_path=path.join(images_dir, "blue_box_hover.png"))],
                 [Button(title="Help", callback=lambda: self.create_help_menu(), 
-                        background_path="images/green_box.png",
-                        background_hover_path="images/green_box_hover.png")],
+                        background_path=path.join(images_dir, "green_box.png"),
+                        background_hover_path=path.join(images_dir, "green_box_hover.png"))],
                 [Button(title="Increase Level", callback=lambda: self.increase_level(),
-                        background_path="images/red_box.png",
-                        background_hover_path="images/red_box_hover.png")],
+                        background_path=path.join(images_dir, "red_box.png"),
+                        background_hover_path=path.join(images_dir, "red_box_hover.png"))],
                 [Button(title="Reset Level", callback=lambda: self.reset_starting_difficulty(),
-                        background_path="images/purple_box.png",
-                        background_hover_path="images/purple_box_hover.png")],
+                        background_path=path.join(images_dir, "purple_box.png"),
+                        background_hover_path=path.join(images_dir, "purple_box_hover.png"))],
                 [Button(title="Exit", callback=lambda: self.exit())],
             ],
             has_close_button=False,
-            background_path="images/grey_box.png"
+            background_path=path.join(images_dir, "grey_box.png")
         )
         self.menu_manager.open_menu(main_menu)
 
@@ -62,7 +64,7 @@ class MainMenuScene:
                              "screen. In the top right, you'll see your performance review. "
                              "Remember that departmental figures are down this year, so "
                              "we'd appreciate a good score while you save the planet.")],
-                [TextElement(text="Press P to begin play, H for this help, L to increase the "
+                [TextElement(text="Press P to begin play, L to increase the "
                              "starting level, R to reset the starting level, "
                              "and Q to dishonourably surrender. Good luck, pilot.")]
             ],

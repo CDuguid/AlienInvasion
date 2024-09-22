@@ -1,5 +1,8 @@
+from os import path
 import pygame
 from pygame.sprite import Sprite
+
+images_dir = path.join(path.dirname(__file__), 'images')
 
 class Ship(Sprite):
     """A class to manage the ship."""
@@ -12,7 +15,7 @@ class Ship(Sprite):
         self.settings = ai_game.settings
         
         # Load the ship image and get its rect.
-        self.image = pygame.image.load('images/ship.png').convert_alpha()
+        self.image = pygame.image.load(path.join(images_dir, 'ship.png')).convert_alpha()
         self.rect = self.image.get_rect()
         
         # Start each new ship at the bottom centre of the screen.
