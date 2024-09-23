@@ -36,7 +36,9 @@ class MainMenuScene:
                 [Button(title="Reset Level", callback=lambda: self.reset_starting_difficulty(),
                         background_path=path.join(images_dir, "purple_box.png"),
                         background_hover_path=path.join(images_dir, "purple_box_hover.png"))],
-                [Button(title="Exit", callback=lambda: self.exit())],
+                [Button(title="Exit", callback=lambda: self.exit(),
+                        background_path=path.join(images_dir, "default_box.png"),
+                        background_hover_path=path.join(images_dir, "default_box_hover.png"))],
             ],
             has_close_button=False,
             background_path=path.join(images_dir, "grey_box.png")
@@ -68,6 +70,9 @@ class MainMenuScene:
                              "starting level, R to reset the starting level, "
                              "and Q to dishonourably surrender. Good luck, pilot.")]
             ],
+            background_path=path.join(images_dir, "default_box.png"),
+            close_button_background_path=path.join(images_dir, "default_box.png"),
+            close_button_background_hover_path=path.join(images_dir, "default_box_hover.png"),
             width=800,
         )
         self.menu_manager.open_menu(help_menu)

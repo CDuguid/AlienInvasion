@@ -1,3 +1,8 @@
 __pycache__/
 .venv/
-high_score.txt
+
+# files and folders created by pyinstaller
+build/
+dist/
+*.spec
+*.zip

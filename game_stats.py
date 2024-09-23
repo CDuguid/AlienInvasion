@@ -1,4 +1,7 @@
 from pathlib import Path
+import os
+
+text_dir = os.path.join(os.path.dirname(__file__), 'text')
 
 class GameStats:
     """Track statistics for Alien Invasion."""
@@ -10,7 +13,7 @@ class GameStats:
         self.reset_level()
         
         # Access the saved high score
-        self.score_path = Path('high_score.txt')
+        self.score_path = Path(os.path.join(text_dir, 'high_score.txt'))
         self.high_score = int(self.score_path.read_text())
     
     def reset_stats(self):
