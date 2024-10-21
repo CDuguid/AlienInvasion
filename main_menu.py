@@ -66,8 +66,8 @@ class MainMenuScene:
                              "screen. In the top right, you'll see your performance review. "
                              "Remember that departmental figures are down this year, so "
                              "we'd appreciate a good score while you save the planet.")],
-                [TextElement(text="Press P to begin play, L to increase the "
-                             "starting level, R to reset the starting level, "
+                [TextElement(text="Shortcuts: P to begin play, M to return to the main menu "
+                             "L to increase the starting level, R to reset the starting level, "
                              "and Q to dishonourably surrender. Good luck, pilot.")]
             ],
             background_path=path.join(images_dir, "default_box.png"),

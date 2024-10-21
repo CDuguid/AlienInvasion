@@ -109,6 +109,8 @@ class AlienInvasion:
         # Letting this one stay active while game is running for convenience
         elif event.key == pygame.K_l:
             self.main_menu_scene.increase_level()
+        elif event.key == pygame.K_m and self.game_active == True:
+            self._end_game()
         elif event.key == pygame.K_h and self.game_active == False:
             self.main_menu_scene.create_help_menu()
         elif event.key == pygame.K_r and self.game_active == False:
