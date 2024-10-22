@@ -14,9 +14,10 @@ class Ship(Sprite):
         self.screen_rect = ai_game.screen.get_rect()
         self.settings = ai_game.settings
         
-        # Load the ship image and get its rect.
+        # Load the ship image, get its rect and set the mask.
         self.image = pygame.image.load(path.join(images_dir, 'ship.png')).convert_alpha()
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
         
         # Start each new ship at the bottom centre of the screen.
         # For windowed mode, position manually or image is drawn below bottom of screen on laptop.

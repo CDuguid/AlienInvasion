@@ -41,6 +41,7 @@ class YellowBullet(Bullet):
         # Overwrite bullet image
         self.image = pygame.image.load(path.join(images_dir, 'yellow_alien_bullet.bmp')).convert()
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
         
         # Change starting position to the firing alien
         self.rect.midbottom = yellow_alien.rect.midbottom
@@ -65,6 +66,7 @@ class RedBullet(Bullet):
         # Overwrite bullet image
         self.image = pygame.image.load(path.join(images_dir, 'red_alien_bullet.bmp')).convert()
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
         
         # Change starting position to the firing alien
         self.rect.midbottom = red_alien.rect.midbottom

@@ -206,10 +206,14 @@ class AlienInvasion:
         
     def _check_bullet_ship_collisions(self):
         """Respond to bullet-ship collisions."""
-        collisions = pygame.sprite.groupcollide(
-            self.alien_bullets, self.ship_sprite, True, False)
-        if collisions:
-            self._ship_hit()
+        # First check for rect collisions to increase performance
+        rect_collisions = pygame.sprite.groupcollide(
+            self.alien_bullets, self.ship_sprite, False, False)
+        # If there are any rect collisions, check them for mask collisions
+        if rect_collisions:
+            if pygame.sprite.spritecollide(self.ship, self.alien_bullets, 
+                True, pygame.sprite.collide_mask):
+                self._ship_hit()
     
     def start_new_level(self):
         """Start a new wave of aliens."""
@@ -231,9 +235,11 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
         
-        # Look for alien-ship collisions
+        # Look for alien-ship collisions: first rects, then masks
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            self._ship_hit()
+            if pygame.sprite.spritecollide(self.ship, self.aliens, 
+                False, pygame.sprite.collide_mask):
+                self._ship_hit()
         
         # Look for aliens hitting the bottom of the screen
         self._check_aliens_bottom()
