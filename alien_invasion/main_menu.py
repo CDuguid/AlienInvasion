@@ -5,7 +5,7 @@ import pygamepopup
 from pygamepopup.components import Button, InfoBox, TextElement
 from pygamepopup.menu_manager import MenuManager
 
-images_dir = path.join(path.dirname(__file__), 'images')
+images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 
 class MainMenuScene:
     """A class to generate the main menu buttons for the game."""

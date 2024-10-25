@@ -15,7 +15,7 @@ from game_sounds import GameSounds
 from main_menu import MainMenuScene
 from explosion import Explosion
 
-images_dir = path.join(path.dirname(__file__), 'images')
+images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""

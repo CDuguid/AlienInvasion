@@ -2,7 +2,7 @@ from os import path
 import pygame
 from pygame.sprite import Sprite
 
-images_dir = path.join(path.dirname(__file__), 'images')
+images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 
 class Bullet(Sprite):
     """A class to manage bullets fired from the ship."""

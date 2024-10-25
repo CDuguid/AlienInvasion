@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 
-text_dir = os.path.join(os.path.dirname(__file__), 'text')
+text_dir = os.path.join(os.path.dirname(__file__), 'assets', 'text')
 
 class GameStats:
     """Track statistics for Alien Invasion."""

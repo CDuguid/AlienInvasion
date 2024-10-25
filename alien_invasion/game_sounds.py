@@ -1,7 +1,7 @@
 from os import path
 import pygame
 
-sounds_dir = path.join(path.dirname(__file__), 'sounds')
+sounds_dir = path.join(path.dirname(__file__), 'assets', 'sounds')
 
 class GameSounds:
     """Play music and sound effects for Alien Invasion."""
