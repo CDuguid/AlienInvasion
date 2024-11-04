@@ -1,6 +1,6 @@
-from alien_invasion import AlienInvasion
-from alien import Alien
-from bullet import Bullet, YellowBullet, RedBullet
+from alien_invasion.alien_invasion import AlienInvasion
+from alien_invasion.alien import Alien
+from alien_invasion.bullet import Bullet, YellowBullet, RedBullet
 import unittest.mock as mock
 import pygame
 import pytest
@@ -106,13 +106,13 @@ class TestUpdates:
         assert len(self.ai.alien_bullets) == 0
     
     # mock randint to trigger firing and non-firing
-    @mock.patch('alien_invasion.randint')
+    @mock.patch('alien_invasion.alien_invasion.randint')
     def test_check_alien_shooting_true(self, mock_randint):
         mock_randint.return_value = 3
         self.ai._check_alien_shooting()
         assert len(self.ai.alien_bullets) > 0
     
-    @mock.patch('alien_invasion.randint')
+    @mock.patch('alien_invasion.alien_invasion.randint')
     def test_check_alien_shooting_false(self, mock_randint):
         mock_randint.return_value = 3000
         self.ai._check_alien_shooting()

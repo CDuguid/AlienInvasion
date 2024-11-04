@@ -1,5 +1,5 @@
-from alien_invasion import AlienInvasion
-from game_stats import GameStats
+from alien_invasion.alien_invasion import AlienInvasion
+from alien_invasion.game_stats import GameStats
 
 
 class TestGameStats:

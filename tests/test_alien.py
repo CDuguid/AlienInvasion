@@ -1,5 +1,5 @@
-from alien_invasion import AlienInvasion
-from alien import Alien
+from alien_invasion.alien_invasion import AlienInvasion
+from alien_invasion.alien import Alien
 
 
 class TestAlien:

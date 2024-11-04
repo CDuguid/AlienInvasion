@@ -5,15 +5,15 @@ from os import path
 import pygame
 import pygamepopup
 
-from settings import Settings
-from ship import Ship
-from bullet import Bullet, YellowBullet, RedBullet
-from alien import Alien, YellowAlien, RedAlien
-from game_stats import GameStats
-from scoreboard import Scoreboard
-from game_sounds import GameSounds
-from main_menu import MainMenuScene
-from explosion import Explosion
+from alien_invasion.settings import Settings
+from alien_invasion.ship import Ship
+from alien_invasion.bullet import Bullet, YellowBullet, RedBullet
+from alien_invasion.alien import Alien, YellowAlien, RedAlien
+from alien_invasion.game_stats import GameStats
+from alien_invasion.scoreboard import Scoreboard
+from alien_invasion.game_sounds import GameSounds
+from alien_invasion.main_menu import MainMenuScene
+from alien_invasion.explosion import Explosion
 
 images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 
