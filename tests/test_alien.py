@@ -1,20 +1,26 @@
 from alien_invasion.alien_invasion import AlienInvasion
 from alien_invasion.alien import Alien
+import pytest
+
+
+@pytest.fixture
+def ai():
+    return AlienInvasion()
+
+@pytest.fixture
+def alien(ai):
+    return Alien(ai)
 
 
 class TestAlien:
+       
+    def test_update(self, ai, alien):
+        starting_x = alien.x
+        alien.update()
+        assert alien.x > starting_x
     
-    def setup_method(self):
-        self.ai = AlienInvasion()
-        self.alien = Alien(self.ai)
-    
-    def test_update(self):
-        starting_x = self.alien.x
-        self.alien.update()
-        assert self.alien.x > starting_x
-    
-    def test_check_edges(self):
-        self.alien.rect.right = self.ai.screen_width
-        self.alien.x = self.alien.rect.x
-        assert self.alien.check_edges() == True
+    def test_check_edges(self, ai, alien):
+        alien.rect.right = ai.screen_width
+        alien.x = alien.rect.x
+        assert alien.check_edges() == True
         

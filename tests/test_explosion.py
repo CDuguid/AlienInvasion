@@ -3,18 +3,26 @@ from alien_invasion.alien import Alien
 from alien_invasion.explosion import Explosion
 import unittest.mock as mock
 import pygame
+import pytest
+
+@pytest.fixture
+def ai():
+    return AlienInvasion()
+
+@pytest.fixture
+def alien(ai):
+    return Alien(ai)
+
+@pytest.fixture
+def explosion(alien):
+    return Explosion(alien.rect.center)
 
 class TestExplosion:
     
-    def setup_method(self):
-        self.ai = AlienInvasion()
-        self.alien = Alien(self.ai)
-        self.explosion = Explosion(self.alien.rect.center)
-    
     @mock.patch("pygame.time.get_ticks")
-    def test_update(self, mock_pygame_time_get_ticks):
-        self.explosion.last_update = 0
-        mock_pygame_time_get_ticks.return_value = self.explosion.frame_rate + 10
-        self.explosion.update()
-        assert self.explosion.image == self.explosion.explosion_animation[1]
+    def test_update(self, mock_pygame_time_get_ticks, explosion):
+        explosion.last_update = 0
+        mock_pygame_time_get_ticks.return_value = explosion.frame_rate + 10
+        explosion.update()
+        assert explosion.image == explosion.explosion_animation[1]
         

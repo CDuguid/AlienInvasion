@@ -1,27 +1,35 @@
 from alien_invasion.alien_invasion import AlienInvasion
 from alien_invasion.alien import Alien
 from alien_invasion.bullet import Bullet, YellowBullet, RedBullet
+import pytest
+
+@pytest.fixture
+def ai():
+    return AlienInvasion()
+
+@pytest.fixture
+def alien(ai):
+    return Alien(ai)
+
+@pytest.fixture
+def bullet(ai):
+    return Bullet(ai)
+
+@pytest.fixture
+def alien_bullet(ai, alien):
+    return YellowBullet(ai, alien)
+
 
 class TestBullet:
     
-    def setup_method(self):
-        self.ai = AlienInvasion()
-        self.bullet = Bullet(self.ai)
-    
-    def test_update(self):
-        starting_y = self.bullet.y
-        self.bullet.update()
-        assert self.bullet.y < starting_y
+    def test_update(self, bullet):
+        starting_y = bullet.y
+        bullet.update()
+        assert bullet.y < starting_y
 
-class TestYellowBullet:
-    """RedBullet's code is identical; no point in testing twice."""
+class TestAlienBullet:
     
-    def setup_method(self):
-        self.ai = AlienInvasion()
-        self.alien = Alien(self.ai)
-        self.bullet = YellowBullet(self.ai, self.alien)
-    
-    def test_update(self):
-        starting_y = self.bullet.y
-        self.bullet.update()
-        assert self.bullet.y > starting_y
+    def test_update(self, alien_bullet):
+        starting_y = alien_bullet.y
+        alien_bullet.update()
+        assert alien_bullet.y > starting_y
