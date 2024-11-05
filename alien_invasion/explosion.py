@@ -2,11 +2,12 @@ from os import path
 import pygame
 from pygame.sprite import Sprite
 
-images_dir = path.join(path.dirname(__file__), 'assets', 'images')
+images_dir = path.join(path.dirname(__file__), "assets", "images")
+
 
 class Explosion(Sprite):
     """A class to manage explosions when sprites are shot."""
-    
+
     def __init__(self, location):
         """Initialise the list of explosion images."""
         super().__init__()
@@ -21,7 +22,7 @@ class Explosion(Sprite):
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 50
-    
+
     def update(self):
         """Move through the animation."""
         now = pygame.time.get_ticks()
