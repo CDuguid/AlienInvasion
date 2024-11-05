@@ -15,6 +15,8 @@ class Scoreboard:
         self.text_colour = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
         
+        self.screen_offset = 10
+        
         self.prep_images()
     
     def prep_score(self):
@@ -25,8 +27,8 @@ class Scoreboard:
                                             self.text_colour)
         
         self.score_rect = self.score_image.get_rect()
-        self.score_rect.right = self.screen_rect.right - 20
-        self.score_rect.top = 20
+        self.score_rect.right = self.screen_rect.right - 2 * self.screen_offset
+        self.score_rect.top = 2 * self.screen_offset
     
     def show_score(self):
         """Draw scores, level and ships to the screen."""
@@ -61,15 +63,15 @@ class Scoreboard:
         
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right
-        self.level_rect.top = self.score_rect.bottom + 10
+        self.level_rect.top = self.score_rect.bottom + self.screen_offset
     
     def prep_ships(self):
         """Show how many ships are left."""
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
             ship = Ship(self.ai_game)
-            ship.rect.x = 10 + ship_number * ship.rect.width
-            ship.rect.y = 10
+            ship.rect.x = self.screen_offset + ship_number * ship.rect.width
+            ship.rect.y = self.screen_offset
             self.ships.add(ship)
     
     def prep_images(self):

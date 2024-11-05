@@ -17,6 +17,11 @@ from alien_invasion.explosion import Explosion
 
 images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+PURPLE = (200, 0, 150)
+
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
     
@@ -281,32 +286,37 @@ class AlienInvasion:
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         
+        alien_free_area = 3 * alien_height
+        alien_y_spacing = 2 * alien_height
+        alien_x_spacing = 2 * alien_width
+        levels_to_add_red_aliens = 4
+        total_y_space = self.screen_height - alien_free_area
+        total_rows = total_y_space // alien_y_spacing
+        req_red_rows = min((self.stats.level - 1) // levels_to_add_red_aliens, total_rows)
+        
         current_x, current_y = alien_width, alien_height
-        total_space_y = self.screen_height -  3 * alien_height
-        total_rows = total_space_y // (2 * alien_height)
-        req_red_rows = min((self.stats.level - 1) // 4, total_rows)
         used_rows = 0
         yellow_row_created = False
         
         # Create a red row every 4 levels, then 1 yellow, then green for remaining rows
         while total_rows - used_rows > 0:
             if req_red_rows - used_rows > 0:
-                while current_x < (self.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - alien_x_spacing):
                     self._create_red_alien(current_x, current_y)
-                    current_x += 2 * alien_width
+                    current_x += alien_x_spacing
             elif total_rows >= 1 and not yellow_row_created:
-                while current_x < (self.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - alien_x_spacing):
                     self._create_yellow_alien(current_x, current_y)
-                    current_x += 2 * alien_width
+                    current_x += alien_x_spacing
                 yellow_row_created = True
             else:
-                while current_x < (self.screen_width - 2 * alien_width):
+                while current_x < (self.screen_width - alien_x_spacing):
                     self._create_alien(current_x, current_y)
-                    current_x += 2 * alien_width
+                    current_x += alien_x_spacing
             
             used_rows += 1
             current_x = alien_width
-            current_y += 2 * alien_height
+            current_y += alien_y_spacing
     
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""
@@ -349,7 +359,7 @@ class AlienInvasion:
     
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BLACK)
         self.screen.blit(self.bg_image, (0, 0))
         self.sb.show_score()
         
@@ -368,12 +378,12 @@ class AlienInvasion:
     
     def _show_intro(self):
         """Shows the intro screen when game is first loaded."""
-        self.screen.fill((0, 0, 0))
-        self._draw_text("ALIEN", 60, (200, 0, 150), 
+        self.screen.fill(BLACK)
+        self._draw_text("ALIEN", 60, PURPLE, 
                        self.screen_width / 2, self.screen_height / 4)
-        self._draw_text("INVASION", 60, (200, 0, 150), 
+        self._draw_text("INVASION", 60, PURPLE, 
                        self.screen_width / 2, self.screen_height / 2)
-        self._draw_text("Press any key to begin", 40, (0, 255, 0), 
+        self._draw_text("Press any key to begin", 40, GREEN, 
                        self.screen_width / 2, self.screen_height * 3 / 4)
         
         pygame.display.flip()
@@ -393,17 +403,18 @@ class AlienInvasion:
         surface.fill((80, 0, 0, 120))
         self.screen.blit(surface, (0, 0))
         
-        self._draw_text("GAME OVER!", 84, (255, 0, 0), 
+        self._draw_text("GAME OVER!", 84, RED, 
                         self.screen_width / 2, self.screen_height / 4)
         self._draw_text(f"You successfully defeated {self.stats.level -1} waves of aliens "
-                        f"with a score of {round(self.stats.score, -1)}", 40, (255, 0, 0), 
+                        f"with a score of {round(self.stats.score, -1)}", 40, RED, 
                        self.screen_width / 2, self.screen_height / 2)
-        self._draw_text(f"The score to beat is currently {round(self.stats.high_score, -1)}", 40, (255, 0, 0),
+        self._draw_text(f"The score to beat is currently {round(self.stats.high_score, -1)}", 40, RED,
                         self.screen_width / 2, self.screen_height / 2 - 40)
-        self._draw_text("Press any key to continue", 40, (255, 0, 0),
+        self._draw_text("Press any key to continue", 40, RED,
                         self.screen_width / 2, self.screen_height * 3 / 4)
         
         pygame.display.flip()
+        sleep(1)
         self._wait_for_key()
     
     def _wait_for_key(self):

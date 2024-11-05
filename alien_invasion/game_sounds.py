@@ -24,13 +24,14 @@ class GameSounds:
     def play_level_theme(self):
         """Stops last soundtrack and plays the soundtrack for a level."""
         pygame.mixer.music.stop()
-        if (self.stats.level % 4) == 1:
+        soundtrack_range = 4
+        if (self.stats.level % soundtrack_range) == 1:
             pygame.mixer.music.load(path.join(sounds_dir, 'soundtrack_1.mp3'))
-        elif (self.stats.level % 4) == 2:
+        elif (self.stats.level % soundtrack_range) == 2:
             pygame.mixer.music.load(path.join(sounds_dir, 'soundtrack_2.mp3'))
-        elif (self.stats.level % 4) == 3:
+        elif (self.stats.level % soundtrack_range) == 3:
             pygame.mixer.music.load(path.join(sounds_dir, 'soundtrack_3.mp3'))
-        elif (self.stats.level % 4) == 0:
+        elif (self.stats.level % soundtrack_range) == 0:
             pygame.mixer.music.load(path.join(sounds_dir, 'soundtrack_4.mp3'))
         pygame.mixer.music.set_volume(0.4)
         pygame.mixer.music.play(-1)
