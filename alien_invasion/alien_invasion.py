@@ -64,6 +64,7 @@ class AlienInvasion:
     
     def run_game(self):
         """Start the main loop for the game."""
+        self._show_intro()
         while True:
             self._check_events()
             
