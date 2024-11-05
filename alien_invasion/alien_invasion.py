@@ -43,6 +43,7 @@ class AlienInvasion:
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
         
+        self.alien = Alien(self)
         self.ship = Ship(self)
         self.ship_sprite = pygame.sprite.Group()
         self.ship_sprite.add(self.ship)
@@ -280,43 +281,57 @@ class AlienInvasion:
             if alien.rect.bottom >= self.screen_height:
                 self._ship_hit()
                 break
-
+    
     def create_fleet(self):
         """Creates the alien fleet."""
-        alien = Alien(self)
-        alien_width, alien_height = alien.rect.size
+        row_comp = self._calculate_row_composition()
+        current_y = self.alien.rect.height
+        alien_y_spacing = 2 * self.alien.rect.height
         
-        alien_free_area = 3 * alien_height
-        alien_y_spacing = 2 * alien_height
-        alien_x_spacing = 2 * alien_width
-        levels_to_add_red_aliens = 4
+        for i in range(row_comp['red_rows']):
+            self._create_row_of_aliens('red', current_y)
+            current_y += alien_y_spacing
+        for i in range(row_comp['yellow_rows']):
+            self._create_row_of_aliens('yellow', current_y)
+            current_y += alien_y_spacing
+        for i in range(row_comp['green_rows']):
+            self._create_row_of_aliens('green', current_y)
+            current_y += alien_y_spacing
+    
+    def _calculate_number_of_rows(self):
+        """Calculates the number of rows of aliens required to create a full fleet."""
+        alien_free_area = 3 * self.alien.rect.height
+        alien_y_spacing = 2 * self.alien.rect.height
         total_y_space = self.screen_height - alien_free_area
         total_rows = total_y_space // alien_y_spacing
-        req_red_rows = min((self.stats.level - 1) // levels_to_add_red_aliens, total_rows)
+        return total_rows
+    
+    def _calculate_row_composition(self):
+        """Calculates how many rows of each alien type to create."""
+        row_comp = {}
+        total_rows = self._calculate_number_of_rows()
+        levels_for_new_red_row = 4
+        req_red_rows = min((self.stats.level - 1) // levels_for_new_red_row, total_rows)
+        row_comp['red_rows'] = req_red_rows
+        req_yellow_rows = min(1, total_rows - req_red_rows)
+        row_comp['yellow_rows'] = req_yellow_rows
+        req_green_rows = max(0, total_rows - req_red_rows - req_yellow_rows)
+        row_comp['green_rows'] = req_green_rows
+        return row_comp
+    
+    def _create_row_of_aliens(self, alien_color, y_position):
+        """Creates a row of aliens of the specified type."""
+        alien_x_spacing = 2 * self.alien.rect.width
+        current_x = self.alien.rect.width
         
-        current_x, current_y = alien_width, alien_height
-        used_rows = 0
-        yellow_row_created = False
-        
-        # Create a red row every 4 levels, then 1 yellow, then green for remaining rows
-        while total_rows - used_rows > 0:
-            if req_red_rows - used_rows > 0:
-                while current_x < (self.screen_width - alien_x_spacing):
-                    self._create_red_alien(current_x, current_y)
-                    current_x += alien_x_spacing
-            elif total_rows >= 1 and not yellow_row_created:
-                while current_x < (self.screen_width - alien_x_spacing):
-                    self._create_yellow_alien(current_x, current_y)
-                    current_x += alien_x_spacing
-                yellow_row_created = True
-            else:
-                while current_x < (self.screen_width - alien_x_spacing):
-                    self._create_alien(current_x, current_y)
-                    current_x += alien_x_spacing
-            
-            used_rows += 1
-            current_x = alien_width
-            current_y += alien_y_spacing
+        while current_x < (self.screen_width - alien_x_spacing):
+            if alien_color == 'green':
+                self._create_alien(current_x, y_position)
+            elif alien_color == 'yellow':
+                self._create_yellow_alien(current_x, y_position)
+            elif alien_color == 'red':
+                self._create_red_alien(current_x, y_position)
+            current_x += alien_x_spacing
     
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""
