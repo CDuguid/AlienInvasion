@@ -20,11 +20,12 @@ images_dir = path.join(path.dirname(__file__), 'assets', 'images')
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
     
-    def __init__(self):
+    def __init__(self, testing=False):
         """Initialise the game and create game resources."""
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings()
+        self.testing = testing
         
         # Next two lines determine fullscreen vs windowed.
         # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -60,7 +61,8 @@ class AlienInvasion:
         
         # Play welcome screen soundtrack
         self.sounds = GameSounds(self)
-        self.sounds.play_main_theme()
+        if not self.testing:
+            self.sounds.play_main_theme()
     
     def run_game(self):
         """Start the main loop for the game."""
@@ -145,7 +147,8 @@ class AlienInvasion:
         self.ship.centre_ship()
         
         # Play level soundtrack
-        self.sounds.play_level_theme()
+        if not self.testing:
+            self.sounds.play_level_theme()
         
         # Hide the mouse cursor - currently not working
         pygame.mouse.set_visible(False)
@@ -155,7 +158,8 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-            self.sounds.play_bullet_sound()
+            if not self.testing:
+                self.sounds.play_bullet_sound()
     
     def _fire_yellow_bullet(self, alien):
         """Create a yellow alien bullet and add it to the alien bullets group."""
@@ -199,7 +203,8 @@ class AlienInvasion:
                 self.explosions.add(explosion)
             self.sb.prep_score()
             self.sb.check_high_score()
-            self.sounds.play_alien_hit_sound()
+            if not self.testing:
+                self.sounds.play_alien_hit_sound()
         
         # Repopulate the fleet if empty.
         if not self.aliens:
@@ -229,7 +234,8 @@ class AlienInvasion:
         self.create_fleet()
         
         # Play new level soundtrack
-        self.sounds.play_level_theme()
+        if not self.testing:
+            self.sounds.play_level_theme()
     
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
@@ -262,7 +268,8 @@ class AlienInvasion:
     
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
-        self.sounds.play_ship_hit_sound()
+        if not self.testing:
+            self.sounds.play_ship_hit_sound()
         
         if self.stats.ships_left > 0:
             # Decrement ships_left and update scoreboard

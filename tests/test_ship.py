@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def ai():
-    return AlienInvasion()
+    return AlienInvasion(testing=True)
 
 
 class TestShip:

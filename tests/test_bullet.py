@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture
 def ai():
-    return AlienInvasion()
+    return AlienInvasion(testing=True)
 
 @pytest.fixture
 def alien(ai):
