@@ -14,7 +14,6 @@ class MainMenuScene:
         self.screen = ai_game.screen
         self.ai_game = ai_game
         self.menu_manager = MenuManager(self.screen)
-        # Track whether the starting level has been increased
         self.level_modified = False
 
         self.create_main_menu_interface()

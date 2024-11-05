@@ -12,11 +12,9 @@ class Scoreboard:
         self.screen_rect = ai_game.screen.get_rect()
         self.stats = ai_game.stats
         
-        # Font settings for scoring information
         self.text_colour = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
         
-        # Prepare the initial score, level and remaining ships images
         self.prep_images()
     
     def prep_score(self):
@@ -26,7 +24,6 @@ class Scoreboard:
         self.score_image = self.font.render(score_str, True, 
                                             self.text_colour)
         
-        # Display the score at the top right of the screen
         self.score_rect = self.score_image.get_rect()
         self.score_rect.right = self.screen_rect.right - 20
         self.score_rect.top = 20
@@ -46,7 +43,6 @@ class Scoreboard:
                                                  self.text_colour)
         
         
-        # Centre the high score at the top of the screen
         self.high_score_rect = self.high_score_image.get_rect()
         self.high_score_rect.centerx = self.screen_rect.centerx
         self.high_score_rect.top = self.score_rect.top
@@ -63,7 +59,6 @@ class Scoreboard:
         self.level_image = self.font.render(level_str, True, 
                                             self.text_colour)
         
-        # Position the level below the score
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right
         self.level_rect.top = self.score_rect.bottom + 10

@@ -12,7 +12,6 @@ class GameStats:
         self.reset_stats()
         self.reset_level()
         
-        # Access the saved high score
         self.score_path = Path(os.path.join(text_dir, 'high_score.txt'))
         self.high_score = int(self.score_path.read_text())
     

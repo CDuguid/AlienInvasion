@@ -11,7 +11,6 @@ class GameSounds:
         pygame.mixer.init()
         self.stats = ai_game.stats
         
-        # Create separate channels for each sound effect
         self.channel_bullet = pygame.mixer.Channel(0)
         self.channel_alien = pygame.mixer.Channel(1)
         self.channel_ship = pygame.mixer.Channel(2)

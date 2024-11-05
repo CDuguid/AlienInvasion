@@ -13,16 +13,13 @@ class Alien(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         
-        # Load the alien image and set its rect attribute.
         self.image = pygame.image.load(path.join(images_dir, 'green_alien.bmp')).convert_alpha()
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         
-        # Start each new alien near the top left of the screen.
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
         
-        # Store the alien's exact horizontal position.
         self.x = float(self.rect.x)
     
     def check_edges(self):
@@ -42,7 +39,6 @@ class YellowAlien(Alien):
         """Initialise the alien and set its starting position."""
         super().__init__(ai_game)
         
-        # Overwrite the default alien image
         self.image = pygame.image.load(path.join(images_dir, 'yellow_alien.bmp')).convert_alpha()
         
 class RedAlien(Alien):
@@ -52,5 +48,4 @@ class RedAlien(Alien):
         """Initialise the alien and set its starting position."""
         super().__init__(ai_game)
         
-        # Overwrite the default alien image
         self.image = pygame.image.load(path.join(images_dir, 'red_alien.bmp')).convert_alpha()      
