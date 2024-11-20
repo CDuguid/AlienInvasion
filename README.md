@@ -30,7 +30,7 @@ If you have [Python](https://www.python.org/downloads/) installed, you can run t
 
 The project requires pygame and a popup manager module to be installed. It's recommended that you use a [virtual environment](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) to do this, but the choice is yours. After setting up and activating the virtual environment, enter `pip install -r requirements.txt`.
 
-It should then be a simple matter of entering `python alien_invasion.py` to run the game.
+It should then be a simple matter of entering `python game.py` to run the game.
 
 ### Gameplay
 The gameplay controls are straightforward: the left and right arrow keys control your movement, and spacebar shoots. For some useful keyboard shortcuts, see the Help section from the main menu. Note that you're limited to 3 active bullets in the air at once.
