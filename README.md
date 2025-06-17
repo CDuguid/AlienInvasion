@@ -15,7 +15,8 @@ Some of the changes include:
 If you have any suggestions for interesting modifications (or bugs), please get in touch!
 
 
-![Game screenshot](https://github.com/user-attachments/assets/eb64e8a2-318b-4bba-a6e1-c4488620a5dd)
+https://github.com/user-attachments/assets/e00d8a08-a6be-4106-9405-32e3d2673f7a
+
 
 
 ## Running the game
