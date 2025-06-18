@@ -25,7 +25,7 @@ class TestSpriteCreation:
 
     @pytest.mark.parametrize("bullets_fired, bullets_active", [(0, 0), (1, 1), (4, 3)])
     def test_fire_bullet(self, bullets_fired, bullets_active, ai):
-        for i in range(bullets_fired):
+        for _ in range(bullets_fired):
             ai._fire_bullet()
         assert len(ai.bullets) == bullets_active
 
@@ -55,7 +55,8 @@ class TestSpriteCreation:
         ai._create_alien(0, 0)
         ai._create_yellow_alien(50, 50)
         ai._create_red_alien(100, 100)
-        assert len(ai.aliens) == 3 and len(ai.yellow_aliens) == len(ai.red_aliens)
+        assert len(ai.aliens) == 3 
+        assert len(ai.yellow_aliens) == len(ai.red_aliens)
 
     def test_create_correct_number_of_yellow_aliens_in_fleet(self, ai, alien):
         ai.empty_sprites()
@@ -114,10 +115,8 @@ class TestUpdates:
         starting_y = alien.rect.y
         ai._create_alien(ai.screen_width, 0)
         ai._check_fleet_edges()
-        assert (
-            ai.settings.fleet_direction == -starting_direction
-            and alien.rect.y > starting_y
-        )
+        assert ai.settings.fleet_direction == -starting_direction
+        assert alien.rect.y > starting_y
 
     def test_fleet_detects_screen_bottom(self, ai, alien, alien_in_group):
         starting_ships = ai.stats.ships_left
@@ -134,11 +133,9 @@ class TestCollisions:
         ai.bullets.add(bullet)
         bullet.rect.center = alien.rect.center
         ai._check_bullet_alien_collisions()
-        assert (
-            ai.stats.score > starting_score
-            and len(ai.bullets) == 0
-            and alien not in ai.aliens
-        )
+        assert ai.stats.score > starting_score
+        assert len(ai.bullets) == 0
+        assert alien not in ai.aliens
 
     def test_aliens_collide_with_player(self, ai, alien, alien_in_group):
         starting_ships = ai.stats.ships_left
@@ -156,7 +153,8 @@ class TestCollisions:
         bullet.rect.x -= 1
         bullet.rect.y -= 1
         ai._check_bullet_ship_collisions()
-        assert len(ai.alien_bullets) == 1 and ai.stats.ships_left == starting_ships
+        assert len(ai.alien_bullets) == 1
+        assert ai.stats.ships_left == starting_ships
 
     def test_player_mask_does_collide(self, ai, alien):
         starting_ships = ai.stats.ships_left
@@ -164,7 +162,8 @@ class TestCollisions:
         ai.alien_bullets.add(bullet)
         bullet.rect.center = ai.ship.rect.center
         ai._check_bullet_ship_collisions()
-        assert len(ai.alien_bullets) == 0 and ai.stats.ships_left == starting_ships - 1
+        assert len(ai.alien_bullets) == 0
+        assert ai.stats.ships_left == starting_ships - 1
 
 
 class TestEvents:

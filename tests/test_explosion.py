@@ -2,7 +2,6 @@ from alien_invasion.alien_invasion import AlienInvasion
 from alien_invasion.alien import Alien
 from alien_invasion.explosion import Explosion
 import unittest.mock as mock
-import pygame
 import pytest
 
 

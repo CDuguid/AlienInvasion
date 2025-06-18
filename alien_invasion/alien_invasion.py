@@ -294,13 +294,13 @@ class AlienInvasion:
         current_y = self.alien.rect.height
         alien_y_spacing = 2 * self.alien.rect.height
 
-        for i in range(row_comp["red_rows"]):
+        for _ in range(row_comp["red_rows"]):
             self._create_row_of_aliens("red", current_y)
             current_y += alien_y_spacing
-        for i in range(row_comp["yellow_rows"]):
+        for _ in range(row_comp["yellow_rows"]):
             self._create_row_of_aliens("yellow", current_y)
             current_y += alien_y_spacing
-        for i in range(row_comp["green_rows"]):
+        for _ in range(row_comp["green_rows"]):
             self._create_row_of_aliens("green", current_y)
             current_y += alien_y_spacing
 
