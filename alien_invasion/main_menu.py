@@ -1,7 +1,6 @@
 import sys
 from os import path
 import pygame
-import pygamepopup
 from pygamepopup.components import Button, InfoBox, TextElement
 from pygamepopup.menu_manager import MenuManager
 
