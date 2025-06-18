@@ -55,7 +55,7 @@ class TestSpriteCreation:
         ai._create_alien(0, 0)
         ai._create_yellow_alien(50, 50)
         ai._create_red_alien(100, 100)
-        assert len(ai.aliens) == 3 
+        assert len(ai.aliens) == 3
         assert len(ai.yellow_aliens) == len(ai.red_aliens)
 
     def test_create_correct_number_of_yellow_aliens_in_fleet(self, ai, alien):
